@@ -1,42 +1,19 @@
 # Getting Started
 
-Nucke is a proxy server that provides flexibility to create your own scan templates.
+Nucke is a powerful proxy that allows users to create custom vulnerability scanning plugins. It supports various fuzzing techniques and offers effortless customization, thanks to its ability to code plugins in Go.
 
 ## Installation
 
+### Remote install
+
 ```
 go install github.com/cfsdes/nucke@latest
-nucke -help
 ```
 
-## Config
+### Build locally
 
-> Remember: The plugin id should be the name of the plugin. E.g.: sample.so => sample
-
-```yaml
-plugins:
-  - name: Example 1
-    path: ~/Desktop/plugins/
-    ids:
-      - "*" # It will load all plugins
-    exclude:
-      - xss-blind # Exclude specific plugins
-
-  - name: Example 2
-    path: gitub.com/<user>/<repo>/<plugins-path>
-    ids:
-      - sql-injection
-      - ssrf
 ```
-
-## Plugins
-
-Access examples/ folder to understand how to create a plugin
-
-## TODO
-
-- Add concurrency scans
-- Create server option to load the Markdown reports
-- Criar fuzzers: fuzzGraphQL()
-- Documentar utilização dos fuzzers
-- Criar documentação mais bonita ao invés de READMEs
+git clone git@github.com:cfsdes/nucke.git
+cd nucke/
+go build
+```
