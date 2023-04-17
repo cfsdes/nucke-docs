@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "tailwindcss": "^3.3.1"
+  },
+  "scripts": {
+    "tailwind": "npx tailwindcss -i ./overrides/assets/styles/input.css -o ./overrides/assets/styles/tailwind.css",
+    "start": "npm run tailwind && mkdocs serve"
+  }
+}
