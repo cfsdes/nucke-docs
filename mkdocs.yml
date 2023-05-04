@@ -1,6 +1,6 @@
 # Project Information
 site_name: Nucke
-site_description: Write your documentation in Markdown and create a professional static site in minutes – searchable, customizable, for all devices.
+site_description: Create custom plugins and run complex scans in minutes - easy to use, fast and free.
 site_url: https://example.com
 site_author: Henrique Scocco
 
@@ -61,6 +61,7 @@ theme:
 
 # Customization
 extra:
+  generator: false # Disable MKDocs Copyright on footer
   annotate:
     json: [.s2]
   #analytics:
@@ -132,7 +133,16 @@ nav:
   - Getting Started:
       - Installation: getting-started/installation.md
       - Usage: getting-started/usage.md
-      - Generating Report: getting-started/reports.md
-      - Plugins: getting-started/plugins.md
-      - TODOs:
-          - todos/index.md
+  - Plugins Guide:
+      - Introduction: plugins/introduction.md
+      - Plugins Syntax: plugins/plugin-syntax.md
+      - Fuzzers: plugins/fuzzers.md
+      - Detections: plugins/detections.md
+      - Utils: plugins/utils.md
+  - Libraries:
+      - Requests: libraries/requests.md
+      - Report: libraries/report.md
+  - Developers:
+      - developers/index.md
+  - TODO:
+      - todos/index.md

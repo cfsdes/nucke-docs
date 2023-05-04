@@ -1,19 +1,34 @@
 # Getting Started
 
-Nucke is a powerful proxy that allows users to create custom vulnerability scanning plugins. It supports various fuzzing techniques and offers effortless customization, thanks to its ability to code plugins in Go.
+!!! abstract "Introduction"
+
+    Nucke is a powerful proxy that allows users to create custom vulnerability scanning plugins. It supports various fuzzing techniques and offers effortless customization, thanks to its ability to code plugins in Go.
+
+## Features
+
+- [x] Simple Proxy Server
+- [x] Flexible Vulnerability Scanner ([Plugins](/plugins/introduction/))
+- [x] Integration with Jaeles Server API
 
 ## Installation
 
-### Remote install
+=== "Remote"
 
-```
-go install github.com/cfsdes/nucke@latest
-```
+    ```bash
+    go install github.com/cfsdes/nucke@latest
+    ```
 
-### Build locally
+=== "Build From Source"
 
+    ```bash
+    git clone git@github.com:cfsdes/nucke.git
+    cd nucke/
+    go build
+    ```
+
+## Configuring CA certificate
 ```
-git clone git@github.com:cfsdes/nucke.git
-cd nucke/
-go build
+nucke -export-ca
+mv nucke-cert.crt /usr/local/share/ca-certificates/
+update-ca-certificates
 ```
