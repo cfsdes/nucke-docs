@@ -1,7 +1,7 @@
 # TODOs
 
 - [ ] Create server option to load the Markdown reports
-- [ ] Criar opção para add parâmetros nos fuzzers
+- [x] Criar opção para add parâmetros nos fuzzers
 - [ ] Ajustar o nucke para não escanear requisições com URLs e parametros repetidos
 - [ ] Add FuzzCookie()
 - [ ] Add FuzzPath()

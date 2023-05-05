@@ -137,3 +137,12 @@ You can add some special values to your payload and nucke will replace them auto
         "{{.original}}' -- -",
     }
     ```
+
+???+ tip "Add custom parameters"
+    You can also add custom parameters to the fuzzers and specify its value using the "***-p***" option:
+
+    ``{{.replaceme}}``
+
+    ```
+    nucke -p "replaceme=test@123"
+    ```
