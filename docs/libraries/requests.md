@@ -1,10 +1,7 @@
-## Import
-
-```go
-import (
-    "github.com/cfsdes/nucke/pkg/requests"
-)
-```
+!!! package
+    ```go
+    import "github.com/cfsdes/nucke/pkg/requests"
+    ```
 
 ## Send Basic Request
 

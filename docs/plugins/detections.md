@@ -1,13 +1,9 @@
 !!! abstract "Introduction"
     The ***Detections*** library is the one used to detect if a vulnerability was detected during the [Fuzzers](/plugins/fuzzers) scan.
 
-## Import
-
-```go
-import (
-    "github.com/cfsdes/nucke/pkg/plugins/detections"
-)
-```
+    ```go
+    import "github.com/cfsdes/nucke/pkg/plugins/detections"
+    ```
 
 ## Usage
 

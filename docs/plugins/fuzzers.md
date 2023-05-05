@@ -5,13 +5,11 @@ The idea of Fuzzers is to provide functions that receive a request and inject th
 !!! Tip "Remember"
     Don't be restricted just to fuzzers library. They are pretty helpful, but don't forget: you can create your own fuzzers from zero, and this is the power of nucke!
 
-## Import
+!!! Package
 
-```go
-import (
-    "github.com/cfsdes/nucke/pkg/plugins/fuzzers"
-)
-```
+    ```go
+    import "github.com/cfsdes/nucke/pkg/plugins/fuzzers"
+    ```
 
 ## Example Usage
 

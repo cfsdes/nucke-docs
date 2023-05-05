@@ -13,8 +13,8 @@ func FuzzXYZ(r *http.Request, client *http.Client, payloads []string, matcher de
     // Clone request
     req := requests.CloneReq(r)
     
-    // Update payloads {{.oob}} to interact url
-    payloads = initializers.ReplaceOob(payloads)
+    // Replace payloads {{.params}}
+    payloads = parsers.ParsePayloads(payloads)
 
     // Fuzz logic ...
 }
@@ -40,6 +40,8 @@ resultChan := make(chan detections.Result)
 // Fuzz Function
 func FuzzXYZ(...) (bool, string, string, string, string) {
 
+    // ...
+    
     // For loop to inject payloads
     for key, _ := range params {
             for _, payload := range payloads {

@@ -1,10 +1,9 @@
+!!! package
+    ```go
+    import "github.com/cfsdes/nucke/pkg/report"
+    ```
+
 ## Generating Report
-
-Import:
-
-```go
-import "github.com/cfsdes/nucke/pkg/report"
-```
 
 Parse template from string:
 

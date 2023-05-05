@@ -2,13 +2,9 @@
 !!! abstract "Introduction"
     Some random useful functions :smile:
 
-### Import
-
-```go
-import (
-    "github.com/cfsdes/nucke/pkg/plugins/utils"
-)
-```
+    ```go
+    import "github.com/cfsdes/nucke/pkg/plugins/utils"
+    ```
 
 ### File To Slice
 
