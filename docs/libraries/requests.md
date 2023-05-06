@@ -41,3 +41,11 @@ Parses response type `*http.Response` and returns information:
 ```go
 statusCode, responseBody, responseHeaders := requests.ParseResponse(resp)
 ```
+
+## Check Authenticated Request
+
+It's possible to check if the request requires authentication using the following function:
+
+```go
+requiresAuth := requests.CheckAuth(req, client)
+```

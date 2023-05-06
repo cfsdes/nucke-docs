@@ -4,7 +4,7 @@
 import (
     "github.com/cfsdes/nucke/pkg/requests"
     "github.com/cfsdes/nucke/pkg/plugins/detections"
-    "github.com/cfsdes/nucke/internal/initializers"
+    "github.com/cfsdes/nucke/internal/parsers"
 )
 
 // Fuzz Function
