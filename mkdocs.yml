@@ -5,7 +5,7 @@ site_url: https://example.com
 site_author: Henrique Scocco
 
 # Repository
-repo_url: https://github.com/cfsdes/nucke/
+repo_url: https://github.com/cfsdes/nucke
 repo_name: GitHub
 
 # Copyright
@@ -17,8 +17,8 @@ theme:
   custom_dir: overrides
   features:
     - announce.dismiss
-    - content.action.edit
-    - content.action.view
+    # - content.action.edit
+    # - content.action.view
     - content.code.annotate
     - content.code.copy
     # - content.tabs.link
