@@ -13,10 +13,17 @@ func FuzzXYZ(r *http.Request, client *http.Client, payloads []string, matcher de
     // Clone request
     req := requests.CloneReq(r)
     
-    // Replace payloads {{.params}}
-    payloads = parsers.ParsePayloads(payloads)
+    // For loop to inject payloads
+    for key, _ := range params {
+            for _, payload := range payloads {
+                
+                // Update payloads {{.params}}
+                payload = parsers.ParsePayload(payload)
 
-    // Fuzz logic ...
+                // Fuzz logic ...
+        }
+    }
+
 }
 ```
 
@@ -46,6 +53,9 @@ func FuzzXYZ(...) (bool, string, string, string, string) {
     for key, _ := range params {
             for _, payload := range payloads {
                 
+                // Update payloads {{.params}}
+                payload = parsers.ParsePayload(payload)
+
                 // ...
                 
                 // Detection:
