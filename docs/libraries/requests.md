@@ -6,7 +6,7 @@
 ## Send Basic Request
 
 ```go
-resTime, resBody, statusCode, resHeaders := requests.BasicRequest(r, client)
+resTime, resBody, statusCode, resHeaders, rawResponse := requests.BasicRequest(r, client)
 ```
 
 ## Clone Request
@@ -22,16 +22,23 @@ req := requests.CloneReq(r)
 
 ## Raw Request
 
+### Convert request to Raw
 To get the raw request of a `req *http.Request`:
 
 ```go
 rawReq := requests.RequestToRaw(req)
 ```
 
+### Get URL from Raw Request
 To extract the raw url of the request:
 
 ```go
 url := requests.ExtractRawURL(rawReq)
+```
+
+### Get Status Code form Raw Response
+```go
+resStatusCode := requests.StatusCodeFromRaw(rawResponse)
 ```
 
 ## Parse Response
@@ -39,7 +46,7 @@ url := requests.ExtractRawURL(rawReq)
 Parses response type `*http.Response` and returns information:
 
 ```go
-statusCode, responseBody, responseHeaders := requests.ParseResponse(resp)
+statusCode, responseBody, responseHeaders, rawResponse := requests.ParseResponse(resp)
 ```
 
 ## Check Authenticated Request

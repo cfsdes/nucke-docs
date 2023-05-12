@@ -8,7 +8,7 @@ import (
 )
 
 // Fuzz Function
-func FuzzXYZ(r *http.Request, client *http.Client, payloads []string, matcher detections.Matcher) (bool, string, string, string, string) {
+func FuzzXYZ(r *http.Request, client *http.Client, payloads []string, matcher detections.Matcher) (bool, string, string, string, string, string) {
 
     // Clone request
     req := requests.CloneReq(r)
@@ -45,7 +45,7 @@ resultChan := make(chan detections.Result)
 
 
 // Fuzz Function
-func FuzzXYZ(...) (bool, string, string, string, string) {
+func FuzzXYZ(...) (bool, string, string, string, string, string) {
 
     // ...
     
@@ -68,7 +68,7 @@ func FuzzXYZ(...) (bool, string, string, string, string) {
     for i := 0; i < len(params)*len(payloads); i++ {
         res := <-resultChan
         if res.Found {
-            return true, res.RawReq, res.URL, res.Payload, res.Param
+            return true, res.RawReq, res.URL, res.Payload, res.Param, res.RawResp
         }
     }
 }
@@ -96,4 +96,16 @@ oobID := initializers.ExtractOobID(payload)
 ### Convert request to Raw
 ```go
 rawReq := requests.RequestToRaw(reqCopy)
+```
+
+## Error Handling
+
+For every error that you want to return, just return if the Debug option is enabled:
+
+```go
+import "github.com/cfsdes/nucke/internal/initializers"
+
+if initializers.Debug {
+    // Print error
+}
 ```

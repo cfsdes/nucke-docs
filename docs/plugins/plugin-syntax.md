@@ -11,6 +11,7 @@ func Run(r *http.Request, client *http.Client, pluginDir string) (
     url string, 
     summary string, 
     vulnFound bool, 
+    rawResp string,
     err error
 ) {
     // Scan logic here!
@@ -27,6 +28,7 @@ func Run(r *http.Request, client *http.Client, pluginDir string) (
     | `url`       | Vulnerable URL found |
     | `summary`   | Report of the vulnerability |
     | `vulnFound` | Boolean value. If ***true***, Nucke will report the vulnerability |
+    | `rawResp`   | Raw Response |
     | `error`     | Error exception
 
 

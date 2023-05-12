@@ -31,6 +31,7 @@ Below is an example code of the usage of fuzzers:
     | `url`         | Vulnerable endpoint          |
     | `payload`     | Payload that matched the rule          |
     | `param`       | Vulnerable parameter injected          |
+    | `rawResp`     | Raw/Full Response        |
     
 
 ```go
@@ -38,7 +39,8 @@ func Run(r *http.Request, client *http.Client, pluginDir string) (
     severity string, 
     url string, 
     summary string, 
-    vulnFound bool, 
+    vulnFound bool,
+    rawResp string, 
     err error
 ) {
 
@@ -52,7 +54,7 @@ func Run(r *http.Request, client *http.Client, pluginDir string) (
     }
 
     // Using fuzzer
-    match, rawReq, url, payload, param := fuzzers.Fuzz<TYPE>(r, client, payloads, matcher)
+    match, rawReq, url, payload, param, rawResp := fuzzers.Fuzz<TYPE>(r, client, payloads, matcher)
 
     //...
 }
@@ -70,21 +72,21 @@ func Run(r *http.Request, client *http.Client, pluginDir string) (
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-match, rawReq, url, payload, param := fuzzers.FuzzQuery(r, client, payloads, matcher)
+match, rawReq, url, payload, param, rawResp := fuzzers.FuzzQuery(r, client, payloads, matcher)
 ```
 
 ### Fuzzing FormData
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-match, rawReq, url, payload, param := fuzzers.FuzzFormData(r, client, payloads, matcher)
+match, rawReq, url, payload, param, rawResp := fuzzers.FuzzFormData(r, client, payloads, matcher)
 ```
 
 ### Fuzzing JSON
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-match, rawReq, url, payload, param := fuzzers.FuzzJSON(r, client, payloads, matcher)
+match, rawReq, url, payload, param, rawResp := fuzzers.FuzzJSON(r, client, payloads, matcher)
 ```
 
 ### Fuzzing Headers
@@ -92,14 +94,14 @@ match, rawReq, url, payload, param := fuzzers.FuzzJSON(r, client, payloads, matc
 ```go
 payloads := []string{"'", "1 OR 1=1"}
 headers := []string{"User-Agent","Referer"}
-match, rawReq, url, payload, param := fuzzers.FuzzHeaders(r, client, payloads, headers, matcher)
+match, rawReq, url, payload, param, rawResp := fuzzers.FuzzHeaders(r, client, payloads, headers, matcher)
 ```
 
 ### Fuzzing XML
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-match, rawReq, url, payload, param := fuzzers.FuzzXML(r, client, payloads, matcher)
+match, rawReq, url, payload, param, rawResp := fuzzers.FuzzXML(r, client, payloads, matcher)
 ```
 
 ### All fuzzers at once
@@ -107,7 +109,7 @@ match, rawReq, url, payload, param := fuzzers.FuzzXML(r, client, payloads, match
 ```go
 payloads := []string{"'", "1 OR 1=1"}
 
-fuzzers := []func(*http.Request, *http.Client, []string, initializers.Matcher) (bool, string, string, string, string){
+fuzzers := []func(*http.Request, *http.Client, []string, initializers.Matcher) (bool, string, string, string, string, string){
     fuzzers.FuzzJSON,
     fuzzers.FuzzQuery,
     fuzzers.FuzzFormData,
@@ -115,8 +117,8 @@ fuzzers := []func(*http.Request, *http.Client, []string, initializers.Matcher) (
 }
 
 for _, fuzzer := range fuzzers {
-    if match, rawReq, url, payload, param := fuzzer(r, client, payloads, matcher); match {
-        return match, rawReq, url, payload, param
+    if match, rawReq, url, payload, param, rawResp := fuzzer(r, client, payloads, matcher); match {
+        return match, rawReq, url, payload, param, rawResp
     }
 }
 ```
