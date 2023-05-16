@@ -77,6 +77,7 @@ The plugin created can be placed in any directory to use further in the `config.
 
 ???+ example "Example: `config.yaml`"
     ```yaml
+    scope: ".*example\.com"
     plugins:
     - name: Injection
       path: ./custom-plugins/

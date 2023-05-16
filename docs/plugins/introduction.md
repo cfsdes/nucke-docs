@@ -15,6 +15,7 @@ To use a plugin, we need to create a configuration file and specify the director
       Below is an example of the configuration file: `config.yaml`
 
       ```yaml
+      scope: ".*example\.com" # Regex to filter scope to scan
       plugins:
         - name: Example 1
           path: ~/Desktop/plugins/
