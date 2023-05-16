@@ -26,9 +26,6 @@ nucke -jc -jc-api "http://jaeles-server:5000"
 # Export CA certificate to install locally/in browser
 nucke -export-ca
 
-# Force rebuild of plugins
-nucke -config config.yaml -update-plugins
-
 # Return debug error messages and requests received
 nucke -debug -v
 
