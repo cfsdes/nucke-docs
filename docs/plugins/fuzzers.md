@@ -109,14 +109,14 @@ match, rawReq, url, payload, param, rawResp := fuzzers.FuzzXML(r, client, payloa
 ```go
 payloads := []string{"'", "1 OR 1=1"}
 
-fuzzers := []func(*http.Request, *http.Client, []string, initializers.Matcher) (bool, string, string, string, string, string){
+allfuzz := []func(*http.Request, *http.Client, []string, initializers.Matcher) (bool, string, string, string, string, string){
     fuzzers.FuzzJSON,
     fuzzers.FuzzQuery,
     fuzzers.FuzzFormData,
     fuzzers.FuzzXML,
 }
 
-for _, fuzzer := range fuzzers {
+for _, fuzzer := range allfuzz {
     if match, rawReq, url, payload, param, rawResp := fuzzer(r, client, payloads, matcher); match {
         return match, rawReq, url, payload, param, rawResp
     }
