@@ -89,6 +89,13 @@ payloads := []string{"'", "1 OR 1=1"}
 match, rawReq, url, payload, param, rawResp := fuzzers.FuzzJSON(r, client, payloads, matcher)
 ```
 
+### Fuzzing XML
+
+```go
+payloads := []string{"'", "1 OR 1=1"}
+match, rawReq, url, payload, param, rawResp := fuzzers.FuzzXML(r, client, payloads, matcher)
+```
+
 ### Fuzzing Headers
 
 ```go
@@ -97,12 +104,14 @@ headers := []string{"User-Agent","Referer"}
 match, rawReq, url, payload, param, rawResp := fuzzers.FuzzHeaders(r, client, payloads, headers, matcher)
 ```
 
-### Fuzzing XML
+### Fuzzing Path
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-match, rawReq, url, payload, param, rawResp := fuzzers.FuzzXML(r, client, payloads, matcher)
+match, rawReq, url, payload, param, rawResp := fuzzers.FuzzPath(r, client, payloads, headers, matcher, "last")
 ```
+> The last argument can be "last" or "*". If last, only the last path will be fuzzed, else all paths will be fuzzed.
+
 
 ### All fuzzers at once
 

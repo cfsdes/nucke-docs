@@ -1,5 +1,7 @@
 ## Fuzzer Syntax
 
+Use the FuzzQuery module as a reference to write fuzzers
+
 ```go
 import (
     "github.com/cfsdes/nucke/pkg/requests"
