@@ -92,7 +92,7 @@ func FuzzXYZ(...) (bool, string, string, string, string, string) {
 
 ### Get oobID
 ```go
-oobID := initializers.ExtractOobID(payload)
+oobID := utils.ExtractOobID(payload)
 ```
 
 ### Convert request to Raw
@@ -106,11 +106,11 @@ For every error that you want to return, just return if the Debug option is enab
 
 ```go
 import (
-    "github.com/cfsdes/nucke/internal/initializers"
+    "github.com/cfsdes/nucke/internal/globals"
     "github.com/fatih/color"
 )
 
-if initializers.Debug {
+if globals.Debug {
     // Print error
     Red := color.New(color.FgBlue, color.Bold).SprintFunc()
     fmt.Printf("[%s] Error message here\n", Red("ERR"))

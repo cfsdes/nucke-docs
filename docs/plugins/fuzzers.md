@@ -118,7 +118,7 @@ match, rawReq, url, payload, param, rawResp := fuzzers.FuzzPath(r, client, paylo
 ```go
 payloads := []string{"'", "1 OR 1=1"}
 
-allfuzz := []func(*http.Request, *http.Client, []string, initializers.Matcher) (bool, string, string, string, string, string){
+allfuzz := []func(*http.Request, *http.Client, []string, detections.Matcher) (bool, string, string, string, string, string){
     fuzzers.FuzzJSON,
     fuzzers.FuzzQuery,
     fuzzers.FuzzFormData,
