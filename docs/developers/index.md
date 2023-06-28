@@ -105,9 +105,18 @@ rawReq := requests.RequestToRaw(reqCopy)
 For every error that you want to return, just return if the Debug option is enabled:
 
 ```go
-import "github.com/cfsdes/nucke/internal/initializers"
+import (
+    "github.com/cfsdes/nucke/internal/initializers"
+    "github.com/fatih/color"
+)
 
 if initializers.Debug {
     // Print error
+    Red := color.New(color.FgBlue, color.Bold).SprintFunc()
+    fmt.Printf("[%s] Error message here\n", Red("ERR"))
+    
+    // Print Debug
+    Blue := color.New(color.FgBlue, color.Bold).SprintFunc()
+    fmt.Printf("[%s] Debug message here\n", Blue("DEBUG"))
 }
 ```
