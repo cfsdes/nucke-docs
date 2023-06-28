@@ -32,8 +32,49 @@ func Run(r *http.Request, client *http.Client, pluginDir string) (
     | `error`     | Error exception
 
 
-??? example "Example: `Run()` Function"
-    **PENDING**
+??? example "Example: Plugin SQL Injection"
+    ```go
+    package main
+
+    import (
+        "net/http"
+        "github.com/cfsdes/nucke/pkg/report"
+        "github.com/cfsdes/nucke/pkg/plugins/fuzzers"
+        "github.com/cfsdes/nucke/pkg/plugins/detections"
+    )
+
+    // SQL Injection scan
+    func Run(r *http.Request, client *http.Client, pluginDir string) (
+        string, 
+        string, 
+        string, 
+        bool, 
+        string,
+        error,
+    ) {
+
+        // Set payloads and match rule
+        payloads := []string{"'", "1 OR 1=1"}
+
+        // Detection Rule
+        matcher := detections.Matcher{
+            Body: &detections.BodyMatcher{
+                RegexList: []string{"SQL Syntax"},
+            },
+        }
+
+        // Using fuzzer
+        vulnFound, rawReq, url, _, _, rawResp := fuzzers.FuzzQuery(r, client, payloads, matcher)
+
+        // Creating Report
+        reportContent := report.ReadFileToString("report-template.md", pluginDir)
+        summary := report.ParseTemplate(reportContent, map[string]interface{}{
+            "request": rawReq,
+        })
+
+        return "High", url, summary, vulnFound, rawResp, nil
+    }
+    ```
 
 ## Plugin Workflow
 
