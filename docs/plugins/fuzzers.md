@@ -101,8 +101,9 @@ match, rawReq, url, payload, param, rawResp := fuzzers.FuzzXML(r, client, payloa
 ```go
 payloads := []string{"'", "1 OR 1=1"}
 headers := []string{"User-Agent","Referer"}
-match, rawReq, url, payload, param, rawResp := fuzzers.FuzzHeaders(r, client, payloads, headers, matcher)
+match, rawReq, url, payload, param, rawResp := fuzzers.FuzzHeaders(r, client, payloads, headers, matcher, "all")
 ```
+> The last argument can be "all" or "". If "all", the payload will be added to all headers at once and sent in a single request.
 
 ### Fuzzing Path
 

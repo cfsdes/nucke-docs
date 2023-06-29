@@ -138,10 +138,11 @@ nav:
       - Plugins Syntax: plugins/plugin-syntax.md
       - Fuzzers: plugins/fuzzers.md
       - Detections: plugins/detections.md
-      - Utils: plugins/utils.md
   - Libraries:
       - Requests: libraries/requests.md
       - Report: libraries/report.md
+      - Utils: libraries/utils.md
+
   - Developers:
       - developers/index.md
   - TODO:
