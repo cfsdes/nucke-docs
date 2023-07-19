@@ -9,6 +9,7 @@ The idea of Fuzzers is to provide functions that receive a request and inject th
 
     ```go
     import "github.com/cfsdes/nucke/pkg/plugins/fuzzers"
+    import "github.com/cfsdes/nucke/pkg/plugins/detections"
     ```
 
 ## Example Usage
@@ -32,7 +33,16 @@ Below is an example code of the usage of fuzzers:
     | `payload`     | Payload that matched the rule          |
     | `param`       | Vulnerable parameter injected          |
     | `rawResp`     | Raw/Full Response        |
+    | `logsScan`    | If the scan doesn't return success, it will return an array containing all tests executed
     
+    > The `logsScan` array contains the following properties:
+    
+        - Found
+        - RawReq
+        - URL
+        - Payload
+        - Param
+        - RawResp
 
 ```go
 func Run(r *http.Request, client *http.Client, pluginDir string) (
@@ -54,7 +64,7 @@ func Run(r *http.Request, client *http.Client, pluginDir string) (
     }
 
     // Using fuzzer
-    match, rawReq, url, payload, param, rawResp := fuzzers.Fuzz<TYPE>(r, client, payloads, matcher)
+    match, rawReq, url, payload, param, rawResp, logsScan := fuzzers.Fuzz<TYPE>(r, client, payloads, matcher)
 
     //...
 }
@@ -72,28 +82,28 @@ func Run(r *http.Request, client *http.Client, pluginDir string) (
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-match, rawReq, url, payload, param, rawResp := fuzzers.FuzzQuery(r, client, payloads, matcher)
+match, rawReq, url, payload, param, rawResp, logsScan := fuzzers.FuzzQuery(r, client, payloads, matcher)
 ```
 
 ### Fuzzing FormData
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-match, rawReq, url, payload, param, rawResp := fuzzers.FuzzFormData(r, client, payloads, matcher)
+match, rawReq, url, payload, param, rawResp, logsScan := fuzzers.FuzzFormData(r, client, payloads, matcher)
 ```
 
 ### Fuzzing JSON
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-match, rawReq, url, payload, param, rawResp := fuzzers.FuzzJSON(r, client, payloads, matcher)
+match, rawReq, url, payload, param, rawResp, logsScan := fuzzers.FuzzJSON(r, client, payloads, matcher)
 ```
 
 ### Fuzzing XML
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-match, rawReq, url, payload, param, rawResp := fuzzers.FuzzXML(r, client, payloads, matcher)
+match, rawReq, url, payload, param, rawResp, logsScan := fuzzers.FuzzXML(r, client, payloads, matcher)
 ```
 
 ### Fuzzing Headers
@@ -101,7 +111,7 @@ match, rawReq, url, payload, param, rawResp := fuzzers.FuzzXML(r, client, payloa
 ```go
 payloads := []string{"'", "1 OR 1=1"}
 headers := []string{"User-Agent","Referer"}
-match, rawReq, url, payload, param, rawResp := fuzzers.FuzzHeaders(r, client, payloads, headers, matcher, "all")
+match, rawReq, url, payload, param, rawResp, logsScan := fuzzers.FuzzHeaders(r, client, payloads, headers, matcher, "all")
 ```
 > The last argument can be "all" or "". If "all", the payload will be added to all headers at once and sent in a single request.
 
@@ -109,7 +119,7 @@ match, rawReq, url, payload, param, rawResp := fuzzers.FuzzHeaders(r, client, pa
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-match, rawReq, url, payload, param, rawResp := fuzzers.FuzzPath(r, client, payloads, headers, matcher, "last")
+match, rawReq, url, payload, param, rawResp, logsScan := fuzzers.FuzzPath(r, client, payloads, headers, matcher, "last")
 ```
 > The last argument can be "last" or "*". If last, only the last path will be fuzzed, else all paths will be fuzzed.
 
@@ -119,7 +129,7 @@ match, rawReq, url, payload, param, rawResp := fuzzers.FuzzPath(r, client, paylo
 ```go
 payloads := []string{"'", "1 OR 1=1"}
 
-allfuzz := []func(*http.Request, *http.Client, []string, detections.Matcher) (bool, string, string, string, string, string){
+allfuzz := []func(*http.Request, *http.Client, []string, detections.Matcher) (bool, string, string, string, string, string, []detections.Result){
     fuzzers.FuzzJSON,
     fuzzers.FuzzQuery,
     fuzzers.FuzzFormData,
@@ -127,7 +137,7 @@ allfuzz := []func(*http.Request, *http.Client, []string, detections.Matcher) (bo
 }
 
 for _, fuzzer := range allfuzz {
-    if match, rawReq, url, payload, param, rawResp := fuzzer(r, client, payloads, matcher); match {
+    if match, rawReq, url, payload, param, rawResp, logsScan := fuzzer(r, client, payloads, matcher); match {
         return match, rawReq, url, payload, param, rawResp
     }
 }

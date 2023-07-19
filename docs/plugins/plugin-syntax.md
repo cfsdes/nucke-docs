@@ -64,7 +64,7 @@ func Run(r *http.Request, client *http.Client, pluginDir string) (
         }
 
         // Using fuzzer
-        vulnFound, rawReq, url, _, _, rawResp := fuzzers.FuzzQuery(r, client, payloads, matcher)
+        vulnFound, rawReq, url, _, _, rawResp, _ := fuzzers.FuzzQuery(r, client, payloads, matcher)
 
         // Creating Report
         reportContent := report.ReadFileToString("report-template.md", pluginDir)

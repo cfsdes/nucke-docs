@@ -1,38 +1,11 @@
 ## Fuzzer Syntax
 
-Use the FuzzQuery module as a reference to write fuzzers
-
-```go
-import (
-    "github.com/cfsdes/nucke/pkg/requests"
-    "github.com/cfsdes/nucke/pkg/plugins/detections"
-    "github.com/cfsdes/nucke/internal/parsers"
-)
-
-// Fuzz Function
-func FuzzXYZ(r *http.Request, client *http.Client, payloads []string, matcher detections.Matcher) (bool, string, string, string, string, string) {
-
-    // Clone request
-    req := requests.CloneReq(r)
-    
-    // For loop to inject payloads
-    for key, _ := range params {
-            for _, payload := range payloads {
-                
-                // Update payloads {{.params}}
-                payload = parsers.ParsePayload(payload)
-
-                // Fuzz logic ...
-        }
-    }
-
-}
-```
-
-## Detections
 
 !!! note "Note"
     If you are a developer and want to create your own fuzzer that uses the ***detections*** library, you can use this guide.
+
+    Use the **FuzzQuery** module as a reference to write fuzzers.
+
 
 The ***detections*** use channels to work with asynchronous detection. It's necessary to don't overload the machine and at the same time detect complex scenarios, like OOB interactions.
 
@@ -40,6 +13,10 @@ To start using them, you can import the package and create a result channel vari
 ```go
 import (
     "github.com/cfsdes/nucke/pkg/plugins/detections"
+    "github.com/cfsdes/nucke/pkg/requests"
+    "github.com/cfsdes/nucke/pkg/globals"
+    "github.com/cfsdes/nucke/internal/parsers"
+    "github.com/cfsdes/nucke/pkg/plugins/utils"
 )
 
 // Result channel
@@ -47,7 +24,13 @@ resultChan := make(chan detections.Result)
 
 
 // Fuzz Function
-func FuzzXYZ(...) (bool, string, string, string, string, string) {
+func FuzzXYZ(r *http.Request, client *http.Client, payloads []string, matcher detections.Matcher) (bool, string, string, string, string, string) {
+
+    // Clone Request
+    req := requests.CloneReq(r)
+
+    // Array containing failed scan logs
+    var logScans []detections.Result
 
     // ...
     
@@ -60,6 +43,12 @@ func FuzzXYZ(...) (bool, string, string, string, string, string) {
 
                 // ...
                 
+                // Get response time
+                elapsed := int(time.Since(start).Seconds())
+
+                // Extract OOB ID
+                oobID := utils.ExtractOobID(payload)
+
                 // Detection:
                 go detections.MatchCheck(matcher, resp, elapsed, oobID, rawReq, payload, key, resultChan)
 
@@ -70,9 +59,21 @@ func FuzzXYZ(...) (bool, string, string, string, string, string) {
     for i := 0; i < len(params)*len(payloads); i++ {
         res := <-resultChan
         if res.Found {
-            return true, res.RawReq, res.URL, res.Payload, res.Param, res.RawResp
+            return true, res.RawReq, res.URL, res.Payload, res.Param, res.RawResp, nil
+        } else {
+            log := detections.Result{
+                Found: false,
+                RawReq: res.RawReq,
+                URL: res.URL,
+                Payload: res.Payload,
+                Param: res.Param,
+                RawResp: res.RawResp,
+            }
+            logScans = append(logScans, log)
         }
     }
+
+    return false, "", "", "", "", "", logScans
 }
 ```
 
