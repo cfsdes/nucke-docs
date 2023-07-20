@@ -43,6 +43,7 @@ Below is an example code of the usage of fuzzers:
         - Payload
         - Param
         - RawResp
+        - ResBody
 
 ```go
 func Run(r *http.Request, client *http.Client, pluginDir string) (
