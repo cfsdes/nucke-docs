@@ -121,3 +121,12 @@ if globals.Debug {
     fmt.Printf("[%s] Debug message here\n", Blue("DEBUG"))
 }
 ```
+
+
+## Profiler Debug Server
+
+If you start nucke with the `-stats` option, the profiler debug endpoint will be also available on `http://localhost:8899/debug/pprof/`
+
+You can analyze:
+    - The `/debug/pprof/heap` to get information about memory alocation
+    - The `/debug/pprof/goroutine` to get information about go routines running
