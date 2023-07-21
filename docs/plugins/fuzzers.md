@@ -120,7 +120,7 @@ match, rawReq, url, payload, param, rawResp, logsScan := fuzzers.FuzzHeaders(r, 
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-match, rawReq, url, payload, param, rawResp, logsScan := fuzzers.FuzzPath(r, client, payloads, headers, matcher, "last")
+match, rawReq, url, payload, param, rawResp, logsScan := fuzzers.FuzzPath(r, client, payloads, matcher, "last")
 ```
 > The last argument can be "last" or "*". If last, only the last path will be fuzzed, else all paths will be fuzzed.
 

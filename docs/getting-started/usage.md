@@ -11,6 +11,9 @@ nucke
 # Load configuration file for plugin scan
 nucke -config config.yaml
 
+# List plugins
+nucke -config config.yaml -list-plugins
+
 # Send to another proxy the plugin scan requests
 nucke -config config.yaml -proxy "http://127.0.0.1:8080"
 
@@ -27,7 +30,7 @@ nucke -jc -jc-api "http://jaeles-server:5000"
 nucke -export-ca
 
 # Return debug error messages and requests received
-nucke -debug -v
+nucke -config config.yaml -debug
 
 # Add custom headers
 nucke -headers "User-Agent: example" -headers "X-Forwarded-For: example.com"
