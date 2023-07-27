@@ -25,15 +25,15 @@ Below is an example code of the usage of fuzzers:
     | `matcher`     | `[]string`          | Match rule used to identify the vulnerable behavior
 
 ???- quote "Fuzzers Returns"
-    | Parameter     | Description       | 
-    | -----------   | ------------------| 
-    | `match`       | Boolean value. If true, the vulnerability was detected    | 
-    | `rawReq`      | If a vulnerability was identified, it'll return the raw request used to exploit     | 
-    | `url`         | Vulnerable endpoint          |
-    | `payload`     | Payload that matched the rule          |
-    | `param`       | Vulnerable parameter injected          |
-    | `rawResp`     | Raw/Full Response        |
-    | `logsScan`    | If the scan doesn't return success, it will return an array containing all tests executed
+    | Parameter     | Type              | Description       | 
+    | -----------   | ------------------| ------------------| 
+    | `match`       | `bool`            | Boolean value. If true, the vulnerability was detected    | 
+    | `rawReq`      | `string`          | If a vulnerability was identified, it'll return the raw request used to exploit     | 
+    | `url`         | `string`          | Vulnerable endpoint          |
+    | `payload`     | `string`          | Payload that matched the rule          |
+    | `param`       | `string`          | Vulnerable parameter injected          |
+    | `rawResp`     | `string`          | Raw/Full Response        |
+    | `logsScan`    | `[]detections.Result` | If the scan doesn't return success, it will return an array containing all tests executed
     
     > The `logsScan` array contains the following properties:
     
