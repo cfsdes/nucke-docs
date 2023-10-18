@@ -3,6 +3,17 @@
     import "github.com/cfsdes/nucke/pkg/requests"
     ```
 
+## Send Request
+Reproduce the request and return a slice of responses for each request made (redirects response + final response).
+```go
+responses := requests.Do(r, client)
+```
+???- quote "Returns"
+    | Parameter     | Type              | Description       | 
+    | -----------   | ------------------| ------------------| 
+    | `responses`     | `[]http.Response`             | Slice with all responses, including intermediate responses (3xx status code)     | 
+    
+
 ## Send Basic Request
 
 ```go

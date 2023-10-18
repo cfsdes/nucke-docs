@@ -11,7 +11,17 @@ The ***detections*** use channels to work with asynchronous detection. It's nece
 
 To start using them, you can import the package and create a result channel variable that will store all detections result:
 ```go
+package fuzzers
+
 import (
+	"net/http"
+    "net/url"
+    "io/ioutil"
+    "bytes"
+    "time"
+    "fmt"
+    "strings"
+
     "github.com/cfsdes/nucke/pkg/plugins/detections"
     "github.com/cfsdes/nucke/pkg/requests"
     "github.com/cfsdes/nucke/pkg/globals"
@@ -19,43 +29,79 @@ import (
     "github.com/cfsdes/nucke/pkg/plugins/utils"
 )
 
-// Result channel
-resultChan := make(chan detections.Result)
-
-
-// Fuzz Function
-func FuzzXYZ(r *http.Request, client *http.Client, payloads []string, matcher detections.Matcher) (bool, string, string, string, string, string) {
-
-    // Clone Request
+func FuzzQuery(r *http.Request, client *http.Client, payloads []string, matcher detections.Matcher) (bool, string, string, string, string, string, []detections.Result) {
     req := requests.CloneReq(r)
+    
+    // Extract parameters from URL
+    params := req.URL.Query()
 
-    // Array containing failed scan logs
+    // Result channel
+    resultChan := make(chan detections.Result)
+
+    // Array com os resultados de cada teste executado falho
     var logScans []detections.Result
 
-    // ...
-    
-    // For loop to inject payloads
+    // Get request body, if method is POST
+    var body []byte
+    var err error
+    body, err = ioutil.ReadAll(req.Body)
+    if err != nil {
+        // handle error
+        if globals.Debug {
+            fmt.Println("fuzzQuery:",err)
+        }
+        return false, "", "", "", "", "", nil
+    }
+
+    // For each parameter, send a new request with the parameter replaced by a payload
     for key, _ := range params {
-            for _, payload := range payloads {
-                
-                // Update payloads {{.params}}
-                payload = parsers.ParsePayload(payload)
+        // Create a new query string with the parameter replaced by a payload
+        for _, payload := range payloads {
 
-                // ...
-                
-                // Get response time
-                elapsed := int(time.Since(start).Seconds())
+            // Delay between requests
+            time.Sleep(time.Duration(globals.Delay) * time.Millisecond)
 
-                // Extract OOB ID
-                oobID := utils.ExtractOobID(payload)
+            // Update payloads {{.params}}
+            payload = parsers.ParsePayload(payload)
 
-                // Detection:
+            newParams := make(url.Values)
+            for k, v := range params {
+                if k == key {
+                    payload  = strings.Replace(payload, "{{.original}}", v[0], -1)
+                    newParams.Set(k, payload)
+                } else {
+                    newParams.Set(k, v[0])
+                }
+            }
+
+            // Copy Request
+            reqCopy := requests.CloneReq(req)
+            reqCopy.URL.RawQuery = newParams.Encode()
+
+            // Add request body
+            reqCopy.Body = ioutil.NopCloser(bytes.NewReader(body))
+
+            // Get raw request
+            rawReq := requests.RequestToRaw(reqCopy)
+
+            // Send request
+            start := time.Now()
+            responses := requests.Do(reqCopy, client)
+
+            // Get response time
+            elapsed := int(time.Since(start).Seconds())
+
+            // Extract OOB ID
+            oobID := utils.ExtractOobID(payload)
+            
+            // Check if match vulnerability
+            for _, resp := range responses {
                 go detections.MatchCheck(matcher, resp, elapsed, oobID, rawReq, payload, key, resultChan)
-
+            }
         }
     }
 
-    // Wait for any goroutine to send a result to the channel and save in log array
+    // Wait for any goroutine to send a result to the channel
     for i := 0; i < len(params)*len(payloads); i++ {
         res := <-resultChan
         log := detections.Result{
@@ -70,7 +116,6 @@ func FuzzXYZ(r *http.Request, client *http.Client, payloads []string, matcher de
         logScans = append(logScans, log)
     }
 
-    // Check if any detection found a match
     for _, res := range logScans {
 		if res.Found {
 			return true, res.RawReq, res.URL, res.Payload, res.Param, res.RawResp, logScans
@@ -132,5 +177,6 @@ if globals.Debug {
 If you start nucke with the `-stats` option, the profiler debug endpoint will be also available on `http://localhost:8899/debug/pprof/`
 
 You can analyze:
-    - The `/debug/pprof/heap` to get information about memory alocation
-    - The `/debug/pprof/goroutine` to get information about go routines running
+
+-  The `/debug/pprof/heap` to get information about memory alocation
+-  The `/debug/pprof/goroutine` to get information about go routines running
