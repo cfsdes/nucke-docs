@@ -1,5 +1,5 @@
 !!! abstract "Introduction"
-    The ***Detections*** library is the one used to detect if a vulnerability was detected during the [Fuzzers](/plugins/fuzzers) scan.
+The **_Detections_** library is the one used to detect if a vulnerability was detected during the [Fuzzers](/plugins/fuzzers) scan.
 
     ```go
     import "github.com/cfsdes/nucke/pkg/plugins/detections"
@@ -36,12 +36,12 @@ matcher := detections.Matcher{
 }
 ```
 
-| Matcher     | Description              | 
-| -----------   | ------------------| 
-| `Body`           | Check if the response body matches any regex of `RegexList`    | 
-| `Time`      | Compare the response time with the `Seconds` value using the `Operator`    | 
-| `Header`    | Check if header matches any regex of `RegexList`         | 
-| `StatusCode`     | Compare the response status code with the `Code` value using the `Operator`           | 
-| `ContentLength`     | Compare the response length with the `Length` value using the `Operator`           | 
-| `OOB`     | Check if the parameter with `{{.oob}}` received any interaction| 
-| `Operator`     | Logical operator to use when multiple matchers are used | 
+| Matcher         | Description                                                                   |
+| --------------- | ----------------------------------------------------------------------------- |
+| `Body`          | Check if the response body matches any regex of `RegexList`                   |
+| `Time`          | Compare the response time with the `Seconds` value using the `Operator`       |
+| `Header`        | Check if header matches any regex of `RegexList`                              |
+| `StatusCode`    | Compare the response status code with the `Code` value using the `Operator`   |
+| `ContentLength` | Compare the body response length with the `Length` value using the `Operator` |
+| `OOB`           | Check if the parameter with `{{.oob}}` received any interaction               |
+| `Operator`      | Logical operator to use when multiple matchers are used                       |
