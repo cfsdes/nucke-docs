@@ -1,8 +1,6 @@
 # Nucke Docs
 
-Documentação do nucke
-
-Para usa-la:
+Usage:
 
 ```
 pip install mkdocs-material
