@@ -10,12 +10,20 @@ Let's first create the plugins' directory and install all required dependencies:
 ```bash
 mkdir nucke-plugins && cd nucke-plugins
 go mod init nucke-plugins
-go get github.com/cfsdes/nucke
+go get github.com/cfsdes/nucke@latest
 ```
 
 Next, you can create other directories and write your plugins into them. For example:
 
 ![](../assets/images/plugins-structure.png)
+
+### **Updating Nucke**
+
+If nucke version is greater than the current version of go.mod, you must update it manually running the following commands:
+```
+go get github.com/cfsdes/nucke@latest
+go mod tidy
+```
 
 ## Specifications
 
