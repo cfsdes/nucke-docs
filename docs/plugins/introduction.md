@@ -17,12 +17,13 @@ To use a plugin, we need to create a configuration file and specify the director
       ```yaml
       scope: ".*example\.com" # Regex to filter scope to scan
       plugins:
-        - name: Example 1
+        - name: Example
           path: ~/Desktop/plugins/
           ids:
             - "*" # It will load all plugins
           exclude:
             - xss-blind # Exclude specific plugins
+          webhook: "https://webhook.com/event" # Webhook to receive scan results
 
         - name: Example 2
           path: gitub.com/<user>/<repo>/<plugins-path>
