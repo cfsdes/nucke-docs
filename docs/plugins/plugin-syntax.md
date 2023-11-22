@@ -1,6 +1,22 @@
 !!! info "Plugins"
     The plugins are written using [Go](https://go.dev/) programming language.
 
+## Set up Environment
+
+Before start creating the plugins, you must set up the environment.
+
+Let's first create the plugins' directory and install all required dependencies:
+
+```bash
+mkdir nucke-plugins && cd nucke-plugins
+go mod init nucke-plugins
+go get github.com/cfsdes/nucke
+```
+
+Next, you can create other directories and write your plugins into them. For example:
+
+![](../assets/images/plugins-structure.png)
+
 ## Specifications
 
 A plugin code must have a `Run()` function. This function will be called by Nucke for each request received. It is the entrypoint to run the scan:
