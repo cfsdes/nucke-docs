@@ -46,13 +46,11 @@ Below is an example code of the usage of fuzzers:
         - ResBody
 
 ```go
-func Run(r *http.Request, client *http.Client, pluginDir string) (
-    severity string, 
+func scan(r *http.Request, client *http.Client, pluginDir string) (
+    vulnFound bool, 
+    rawReq string, 
     url string, 
-    summary string, 
-    vulnFound bool,
-    rawResp string, 
-    err error
+    rawResp string
 ) {
 
     // Set payloads and match rule
@@ -67,10 +65,8 @@ func Run(r *http.Request, client *http.Client, pluginDir string) (
     // Using fuzzer
     match, rawReq, url, payload, param, rawResp, logsScan := fuzzers.Fuzz<TYPE>(r, client, payloads, matcher)
 
-    //...
+    return
 }
-
-
 ```
 
 

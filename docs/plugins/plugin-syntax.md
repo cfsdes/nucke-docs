@@ -61,14 +61,29 @@ func Run(r *http.Request, client *http.Client, pluginDir string) (
 
     // SQL Injection scan
     func Run(r *http.Request, client *http.Client, pluginDir string) (
-        string, 
-        string, 
-        string, 
-        bool, 
-        string,
-        error,
+        string, // severity
+        string, // url
+        string, // summary (report content)
+        bool,   // vuln found
+        string, // raw response
+        error,  // error
     ) {
 
+        // Scan
+        vulnFound, rawReq, url, rawResp := scan(r, client, pluginDir)
+
+        // Report
+        reportContent := report.ReadFileToString("report-template.md", pluginDir)
+        summary := report.ParseTemplate(reportContent, map[string]interface{}{
+            "request": rawReq,
+        })
+        
+        return	"High", url, summary, vulnFound, rawResp, nil
+    }
+
+
+    func scan(r *http.Request, client *http.Client, pluginDir string) (vulnFound bool, rawReq string, url string, rawResp string) {
+        
         // Set payloads and match rule
         payloads := []string{"'", "1 OR 1=1"}
 
@@ -79,16 +94,10 @@ func Run(r *http.Request, client *http.Client, pluginDir string) (
             },
         }
 
-        // Using fuzzer
-        vulnFound, rawReq, url, _, _, rawResp, _ := fuzzers.FuzzQuery(r, client, payloads, matcher)
+        // Fuzzing all query parameters
+        vulnFound, rawReq, url, _, _, rawResp, _ = fuzzers.FuzzQuery(r, client, payloads, matcher)
 
-        // Creating Report
-        reportContent := report.ReadFileToString("report-template.md", pluginDir)
-        summary := report.ParseTemplate(reportContent, map[string]interface{}{
-            "request": rawReq,
-        })
-
-        return "High", url, summary, vulnFound, rawResp, nil
+        return
     }
     ```
 
