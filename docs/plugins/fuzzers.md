@@ -103,6 +103,14 @@ payloads := []string{"'", "1 OR 1=1"}
 match, rawReq, url, payload, param, rawResp, logsScan := fuzzers.FuzzXML(r, client, payloads, matcher)
 ```
 
+### All fuzzers at once
+
+```go
+payloads := []string{"'", "1 OR 1=1"}
+match, rawReq, url, payload, param, rawResp, logsScan := fuzzers.FuzzAll(r, client, payloads, matcher)
+```
+
+## Special Fuzzers
 ### Fuzzing Headers
 
 ```go
@@ -121,24 +129,7 @@ match, rawReq, url, payload, param, rawResp, logsScan := fuzzers.FuzzPath(r, cli
 > The last argument can be "last" or "*". If last, only the last path will be fuzzed, else all paths will be fuzzed.
 
 
-### All fuzzers at once
 
-```go
-payloads := []string{"'", "1 OR 1=1"}
-
-allfuzz := []func(*http.Request, *http.Client, []string, detections.Matcher) (bool, string, string, string, string, string, []detections.Result){
-    fuzzers.FuzzJSON,
-    fuzzers.FuzzQuery,
-    fuzzers.FuzzFormData,
-    fuzzers.FuzzXML,
-}
-
-for _, fuzzer := range allfuzz {
-    if match, rawReq, url, payload, param, rawResp, logsScan := fuzzer(r, client, payloads, matcher); match {
-        return match, rawReq, url, payload, param, rawResp
-    }
-}
-```
 
 ## Built-in parameters
 
