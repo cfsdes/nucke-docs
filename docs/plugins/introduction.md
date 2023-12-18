@@ -24,12 +24,6 @@ To use a plugin, we need to create a configuration file and specify the director
           exclude:
             - xss-blind # Exclude specific plugins
           webhook: "https://webhook.com/event" # Webhook to receive scan results
-
-        - name: Example 2
-          path: gitub.com/<user>/<repo>/<plugins-path>
-          ids:
-            - sql-injection
-            - ssrf
       ```
 
       > Remember: The plugin id should be the name of the plugin. E.g.: sample.go => sample

@@ -3,6 +3,7 @@
 
 ## Set up Environment
 
+### Install dependencies
 Before start creating the plugins, you must set up the environment.
 
 Let's first create the plugins' directory and install all required dependencies:
@@ -13,13 +14,27 @@ go mod init nucke-plugins
 go get github.com/cfsdes/nucke@latest
 ```
 
-Next, you can create other directories and write your plugins into them. For example:
+### Directory Structure
 
-![](../assets/images/plugins-structure.png)
+The plugins created must have the following structure:
+
+???+ example "Example: Plugin Directory"
+
+    ```
+    nucke-plugins/
+    ├── go.mod
+    ├── config.yaml
+    ├── ssrf/
+    │   ├── ssrf.go
+    │   └── report-template.md
+    └── sqli/
+        ├── sqli.go
+        └── report-template.md
+    ```
 
 ### **Updating Nucke**
 
-If nucke version is greater than the current version of go.mod, you must update it manually running the following commands:
+If nucke version is different than the current version of go.mod, you must update it manually running the following commands:
 ```
 go get github.com/cfsdes/nucke@latest
 go mod tidy
@@ -31,12 +46,13 @@ A plugin code must have a `Run()` function. This function will be called by Nuck
 
 ```go
 func Run(r *http.Request, client *http.Client, pluginDir string) (
-    severity string, 
-    url string, 
-    summary string, 
-    vulnFound bool, 
+    found bool, 
+    severity, 
+    url, 
+    payload, 
+    param, 
+    rawReq, 
     rawResp string,
-    err error
 ) {
     // Scan logic here!
 }
@@ -48,12 +64,13 @@ func Run(r *http.Request, client *http.Client, pluginDir string) (
     
     | Variable    | Description                          |
     | ----------- | ------------------------------------ |
+    | `found` | Boolean value. If ***true***, Nucke will report the vulnerability |
     | `severity`  | Severity of the vulnerability. Should be ***Critical***, ***High***, ***Medium***, ***Low*** or ***Info***  |
     | `url`       | Vulnerable URL found |
-    | `summary`   | Report of the vulnerability |
-    | `vulnFound` | Boolean value. If ***true***, Nucke will report the vulnerability |
+    | `payload`   | Payload used to trigger the vuln |
+    | `param`   | Affected parameter / Injection point |
+    | `rawReq`   | Raw Request |
     | `rawResp`   | Raw Response |
-    | `error`     | Error exception
 
 
 ??? example "Example: Plugin SQL Injection"
@@ -62,49 +79,29 @@ func Run(r *http.Request, client *http.Client, pluginDir string) (
 
     import (
         "net/http"
-        "github.com/cfsdes/nucke/pkg/report"
+        "github.com/cfsdes/nucke/pkg/plugins/utils"
         "github.com/cfsdes/nucke/pkg/plugins/fuzzers"
         "github.com/cfsdes/nucke/pkg/plugins/detections"
     )
 
-    // SQL Injection scan
-    func Run(r *http.Request, client *http.Client, pluginDir string) (
-        string, // severity
-        string, // url
-        string, // summary (report content)
-        bool,   // vuln found
-        string, // raw response
-        error,  // error
-    ) {
 
-        // Scan
-        vulnFound, rawReq, url, rawResp := scan(r, client, pluginDir)
-
-        // Report
-        reportContent := report.ReadFileToString("report-template.md", pluginDir)
-        summary := report.ParseTemplate(reportContent, map[string]interface{}{
-            "request": rawReq,
-        })
+    func Run(r *http.Request, client *http.Client, pluginDir string) (found bool, severity, url, payload, param, rawReq, rawResp string) {
+        severity = "High"
         
-        return	"High", url, summary, vulnFound, rawResp, nil
-    }
+        // Read rules file
+        rules := utils.FileToSlice(pluginDir, "regex_match.txt")
 
-
-    func scan(r *http.Request, client *http.Client, pluginDir string) (vulnFound bool, rawReq string, url string, rawResp string) {
-        
-        // Set payloads and match rule
-        payloads := []string{"'", "1 OR 1=1"}
-
-        // Detection Rule
+        // Creating payload and matcher
+        payloads := []string{"{{.original}}'", "{{.original}}\\"}
         matcher := detections.Matcher{
             Body: &detections.BodyMatcher{
-                RegexList: []string{"SQL Syntax"},
+                RegexList: rules,
             },
         }
 
-        // Fuzzing all query parameters
-        vulnFound, rawReq, url, _, _, rawResp, _ = fuzzers.FuzzQuery(r, client, payloads, matcher)
-
+        // Running All Fuzzers
+        found, url, payload, param, rawReq, rawResp, _ = fuzzers.FuzzAll(r, client, payloads, matcher)
+        
         return
     }
     ```
@@ -132,30 +129,4 @@ sequenceDiagram
 ```
 
 
-## Directory Structure
 
-The plugin created can be placed in any directory to use further in the `config.yaml` file.
-
-???+ example "Example: Plugin Directory"
-
-    ```
-    ./custom-plugins/
-        .. ssrf/
-            .. ssrf.go
-            .. report-template.md
-
-        .. sqli/
-            .. sqli.go
-            .. report-template.md
-    ```
-
-???+ example "Example: `config.yaml`"
-    ```yaml
-    scope: ".*example\.com"
-    plugins:
-    - name: Injection
-      path: ./custom-plugins/
-      ids:
-      - sqli
-      - ssrf
-    ```
