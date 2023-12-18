@@ -162,7 +162,7 @@ import (
 
 if globals.Debug {
     // Print error
-    Red := color.New(color.FgBlue, color.Bold).SprintFunc()
+    Red := color.New(color.FgRed, color.Bold).SprintFunc()
     fmt.Printf("[%s] Error message here\n", Red("ERR"))
     
     // Print Debug
