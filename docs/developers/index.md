@@ -156,7 +156,7 @@ For every error that you want to return, just return if the Debug option is enab
 
 ```go
 import (
-    "github.com/cfsdes/nucke/internal/globals"
+    "github.com/cfsdes/nucke/pkg/globals"
     "github.com/fatih/color"
 )
 
