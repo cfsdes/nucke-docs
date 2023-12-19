@@ -56,7 +56,7 @@ matcher := detections.Matcher{
 }
 
 // Using fuzzer
-found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.Fuzz<TYPE>(r, client, payloads, matcher)
+found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.Fuzz<TYPE>(r, client, pluginDir, payloads, matcher)
 ```
 
 
@@ -69,35 +69,35 @@ found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.Fuzz<TYPE>(r, c
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzQuery(r, client, payloads, matcher)
+found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzQuery(r, client, pluginDir, payloads, matcher)
 ```
 
 ### Fuzzing FormData
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzFormData(r, client, payloads, matcher)
+found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzFormData(r, client, pluginDir, payloads, matcher)
 ```
 
 ### Fuzzing JSON
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzJSON(r, client, payloads, matcher)
+found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzJSON(r, client, pluginDir, payloads, matcher)
 ```
 
 ### Fuzzing XML
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzXML(r, client, payloads, matcher)
+found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzXML(r, client, pluginDir, payloads, matcher)
 ```
 
 ### All fuzzers at once
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzAll(r, client, payloads, matcher)
+found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzAll(r, client, pluginDir, payloads, matcher)
 ```
 
 ## Special Fuzzers
@@ -106,7 +106,7 @@ found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzAll(r, clie
 ```go
 payloads := []string{"'", "1 OR 1=1"}
 headers := []string{"User-Agent","Referer"}
-found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzHeaders(r, client, payloads, headers, matcher, "all")
+found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzHeaders(r, client, pluginDir, payloads, headers, matcher, "all")
 ```
 > The last argument can be "all" or "". If "all", the payload will be added to all headers at once and sent in a single request.
 
@@ -114,7 +114,7 @@ found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzHeaders(r, 
 
 ```go
 payloads := []string{"'", "1 OR 1=1"}
-found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzPath(r, client, payloads, matcher, "last")
+found, url, payload, param, rawReq, rawResp, logsScan := fuzzers.FuzzPath(r, client, pluginDir, payloads, matcher, "last")
 ```
 > The last argument can be "last" or "*". If last, only the last path will be fuzzed, else all paths will be fuzzed.
 

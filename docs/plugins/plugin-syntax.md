@@ -100,7 +100,7 @@ func Run(r *http.Request, client *http.Client, pluginDir string) (
         }
 
         // Running All Fuzzers
-        found, url, payload, param, rawReq, rawResp, _ = fuzzers.FuzzAll(r, client, payloads, matcher)
+        found, url, payload, param, rawReq, rawResp, _ = fuzzers.FuzzAll(r, client, pluginDir, payloads, matcher)
         
         return
     }
