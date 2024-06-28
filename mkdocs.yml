@@ -135,15 +135,13 @@ nav:
       - Usage: getting-started/usage.md
   - Plugins Guide:
       - Introduction: plugins/introduction.md
-      - Plugins Syntax: plugins/plugin-syntax.md
+      - Reporting: plugins/reporting.md
+      - Creating Plugins: plugins/plugin-syntax.md
       - Fuzzers: plugins/fuzzers.md
       - Detections: plugins/detections.md
-  - Libraries:
-      - Requests: libraries/requests.md
-      - Report: libraries/report.md
-      - Utils: libraries/utils.md
-
   - Developers:
       - developers/index.md
+      - Requests: libraries/requests.md
+      - Utils: libraries/utils.md
   - TODO:
       - todos/index.md

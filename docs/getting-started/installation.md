@@ -10,7 +10,17 @@
 - [x] Flexible Vulnerability Scanner ([Plugins](/plugins/introduction/))
 - [x] Integration with Jaeles Server API
 
-## Installation
+## Requirements
+
+1. Install interactsh:
+```
+go install -v github.com/projectdiscovery/interactsh/cmd/interactsh-client@latest
+```
+
+2. Install redis
+https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/
+
+## Nucke Installation
 
 === "Remote"
 
@@ -27,6 +37,7 @@
     ```
 
 ## Configuring CA certificate
+Before using nucke, you must add the CA certificate in your browser to be able to intercept requests. To export the CA certificate:
 ```
 nucke -export-ca
 mv nucke-cert.crt /usr/local/share/ca-certificates/

@@ -27,6 +27,7 @@ resTime, resBody, statusCode, resHeaders, rawResponse := requests.BasicRequest(r
     | `statusCode`  | `string`          | Response Status Code   |
     | `resHeaders`  | `string`          | Response Headers           |
     | `rawResponse` | `string`          | Raw Response (Path + Headers + Body)  |
+    | `err` | `error`          | Error  |
     
 
 ## Clone Request

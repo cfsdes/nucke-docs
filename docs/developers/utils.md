@@ -38,10 +38,3 @@ Return the random ID appened to the OOB url:
 ```go
 oob_id := ExtractOobID(updatedPayload)
 ```
-
-### Check OOB Interaction
-
-Check if the given ID received any external interaction
-```go
-bool ret = CheckOobInteraction(oob_id)
-```
