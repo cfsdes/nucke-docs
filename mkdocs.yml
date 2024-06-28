@@ -143,5 +143,3 @@ nav:
       - developers/index.md
       - Requests: developers/requests.md
       - Utils: developers/utils.md
-  - TODO:
-      - todos/index.md
