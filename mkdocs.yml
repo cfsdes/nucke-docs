@@ -141,7 +141,7 @@ nav:
       - Detections: plugins/detections.md
   - Developers:
       - developers/index.md
-      - Requests: libraries/requests.md
-      - Utils: libraries/utils.md
+      - Requests: developers/requests.md
+      - Utils: developers/utils.md
   - TODO:
       - todos/index.md
