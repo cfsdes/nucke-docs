@@ -23,9 +23,6 @@ nucke -config config.yaml -out report
 # Set threads to scan (concurrency of urls to be scanned)
 nucke -config config.yaml -threads 50
 
-# Start proxy server and redirect requests to jaeles API
-nucke -jc -jc-api "http://jaeles-server:5000"
-
 # Export CA certificate to install locally/in browser
 nucke -export-ca
 
