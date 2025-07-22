@@ -29,10 +29,3 @@ You can analyze:
 -  The `/debug/pprof/heap` to get information about memory alocation
 -  The `/debug/pprof/goroutine` to get information about go routines running
 
-
-## Request delay
-
-Every time you make a manual request, be sure to add the following line before the request, to make the delay between requests work properly:
-```go
-time.Sleep(time.Duration(globals.Delay) * time.Millisecond)
-```
