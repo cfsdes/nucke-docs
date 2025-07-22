@@ -8,7 +8,6 @@
 
 - [x] Simple Proxy Server
 - [x] Flexible Vulnerability Scanner ([Plugins](/plugins/introduction/))
-- [x] Integration with Jaeles Server API
 
 ## Requirements
 
@@ -17,8 +16,7 @@
 go install -v github.com/projectdiscovery/interactsh/cmd/interactsh-client@latest
 ```
 
-2. Install redis
-https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/
+2. Install [redis](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/)
 
 ## Nucke Installation
 
